@@ -7,6 +7,8 @@ import 'office-ui-fabric-vue/dist/index.css'
 import OfficeUIFabricVue from 'office-ui-fabric-vue'
 import axios from 'axios'
 
+import './index.css'
+
 Vue.prototype.$axios = axios.create({
   baseURL: 'http://163.47.115.230:30000/api/'
 })

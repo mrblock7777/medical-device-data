@@ -9,7 +9,7 @@
 </template>
 <script lang="ts">
 import Vue from 'vue'
-const Component = Vue.extend({
+export default Vue.extend({
     data(){
         return{
             email: '',
@@ -19,16 +19,17 @@ const Component = Vue.extend({
     methods:{
         async login(){
             try{
-            let res = await this.$axios.post('/login',{
-                email: this.email,
-                password: this.password
-            })
-            console.log(res)
+                let res = await this.$axios.post('/login',{
+                    email: this.email,
+                    password: this.password
+                })
+                localStorage.setItem('accessToken', res.data.access_token)
+                // this.$router.push('/medical_device')
+                console.log(localStorage.getItem('accessToken'))
             }catch(e){
                 console.log(e)
             }
         }
     }
 })
-export default Component
 </script>
