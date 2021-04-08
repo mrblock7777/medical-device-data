@@ -10,9 +10,18 @@ import axios from 'axios'
 import './index.css'
 
 Vue.prototype.$axios = axios.create({
-  baseURL: 'http://163.47.115.230:30000/api/'
+  baseURL: 'http://163.47.115.230:30000/api/',
+  headers:{
+    Authorization: localStorage.getItem('accessToken'),
+  }
 })
-
+Vue.prototype.$axios.interceptors.response.use((response: any) => response, (error:any) =>{
+  let statusCode = error.response.status
+  if(statusCode === 401){
+    localStorage.removeItem('accessToken')
+    router.go(0)
+  }
+})
 Vue.use(OfficeUIFabricVue)
 
 Vue.config.productionTip = false

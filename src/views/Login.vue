@@ -24,8 +24,7 @@ export default Vue.extend({
                     password: this.password
                 })
                 localStorage.setItem('accessToken', res.data.access_token)
-                // this.$router.push('/medical_device')
-                console.log(localStorage.getItem('accessToken'))
+                this.$router.go(0)
             }catch(e){
                 console.log(e)
             }
