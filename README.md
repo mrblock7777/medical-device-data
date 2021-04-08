@@ -1,19 +1,15 @@
-# medical_device
+# Medical Device Manager
 
-## Project setup
+## Upon cloning the repository:
+### Run
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
+to install all dependencies from package.json(Mandatory)
 ```
 npm run serve
 ```
+to start development server and view the website locally. Default localhost port is 8080
 
-### Compiles and minifies for production
-```
-npm run build
-```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+Link to the production website: http://medical-device-data-website.s3-website-ap-southeast-1.amazonaws.com/
