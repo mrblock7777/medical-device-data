@@ -21,6 +21,9 @@ Vue.prototype.$axios.interceptors.response.use((response: any) => response, (err
     localStorage.removeItem('accessToken')
     router.go(0)
   }
+  else{
+    throw error
+  }
 })
 Vue.use(OfficeUIFabricVue)
 

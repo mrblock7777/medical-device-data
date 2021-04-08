@@ -2,7 +2,7 @@
   <div>
     <p class="text-3xl mx-4 my-4">Create New Device Model</p>
     <ou-button @click="$router.go(-1)">Back</ou-button>
-    <div class="form">
+    <div class="form my-10">
       <div class="brand-id">
         <ou-text-field v-model="BrandId" label="Brand ID" />
       </div>
@@ -23,9 +23,21 @@
       <div class="comment">
         <ou-text-field v-model="Comment" label="Comment" />
       </div>
-      <ou-button class="float-right" type="primary" @click="createDeviceModel()"
-        >Submit</ou-button
+      <ou-message-bar
+        v-show="errorMessage.length"
+        icon="ErrorBadge"
+        type="error"
+        >{{ errorMessage }}</ou-message-bar
       >
+      <ou-button
+        class="float-right"
+        type="primary"
+        :disabled="isLoading"
+        @click="createDeviceModel()"
+      >
+        <span v-show="!isLoading">Save</span>
+        <ou-spinner v-show="isLoading" />
+      </ou-button>
     </div>
   </div>
 </template>
@@ -39,6 +51,8 @@ export default Vue.extend({
       Name: "",
       Comment: "",
       deviceTypes: [],
+      isLoading: false,
+      errorMessage: "",
     };
   },
   methods: {
@@ -60,10 +74,15 @@ export default Vue.extend({
       };
       console.log(inputParams);
       try {
+        this.isLoading = true;
         await this.$axios.post("/devicemodel", inputParams);
         this.$router.push("/medical_device");
       } catch (e) {
-        console.log(e.response);
+        this.isLoading = false;
+        let error = e.response;
+        if (error.status === 400) {
+          this.errorMessage = "Please ensure all fields are filled";
+        }
       }
     },
   },

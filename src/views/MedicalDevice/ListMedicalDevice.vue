@@ -1,29 +1,39 @@
 <template>
   <div class="relative">
-    <p class="text-3xl mx-4 my-4">Medical Device ({{ modelTypes.length }})</p>
-    <ou-button @click="$router.push('/medical_device/add')" type="primary"
+    <p class="text-3xl my-4">
+      Medical Device ({{ isLoading ? "Loading" : modelTypes.length }})
+    </p>
+    <ou-button
+      class="float-right"
+      @click="$router.push('/medical_device/add')"
+      type="primary"
       >Add Device</ou-button
     >
-    <CustomDialog
-      :title="`${selectedModelData.brand} (${selectedModelData.model})`"
-      :openDialog="openDialog"
-      v-show="openDialog"
-      @onClose="openDialog = false"
-    >
-      <div v-if="openDialog && selectedModelData.data">
-        <CustomTable
-          :columns="modelDataColumns"
-          :rows="selectedModelData.data"
-          id="Id"
-        />
-      </div>
-    </CustomDialog>
-    <CustomTable
-      :columns="modelTypeColumns"
-      :rows="modelTypes"
-      id="Id"
-      @view-model-data="getModelData"
-    />
+    <div v-if="!isLoading">
+      <CustomDialog
+        :title="`${selectedModelData.brand} (${selectedModelData.model})`"
+        :openDialog="openDialog"
+        v-show="openDialog"
+        @onClose="openDialog = false"
+      >
+        <div v-if="openDialog && selectedModelData.data">
+          <CustomTable
+            :columns="modelDataColumns"
+            :rows="selectedModelData.data"
+            id="Id"
+          />
+        </div>
+      </CustomDialog>
+      <CustomTable
+        :columns="modelTypeColumns"
+        :rows="modelTypes"
+        id="Id"
+        @view-model-data="getModelData"
+      />
+    </div>
+    <div v-else>
+      <ou-spinner/>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -53,16 +63,19 @@ export default Vue.extend({
           field: "Name",
           title: "Name",
           type: "text",
+          width: "1/3",
         },
         {
           field: "Description",
           title: "Description",
           type: "text",
+          width: "2/5",
         },
         {
           field: "Comment",
           title: "Comment",
           type: "text",
+          width: "1/4",
         },
         {
           field: "View",
@@ -103,6 +116,7 @@ export default Vue.extend({
           field: "Description",
           title: "Description",
           type: "text",
+          width: "2/5",
         },
         {
           field: "ProtocolOrder",
@@ -117,6 +131,7 @@ export default Vue.extend({
       ],
       selectedModelData: {},
       openDialog: false,
+      isLoading: false,
     };
   },
   components: {
@@ -144,13 +159,16 @@ export default Vue.extend({
     },
     async getModelType(): Promise<void> {
       try {
+        this.isLoading = true;
         let modelTypes = await this.$axios.get("/overview/modeltype");
         // this.modelTypeColumns = Object.keys(modelTypes.data[0])
         this.modelTypes = modelTypes.data.map((model: any) => {
           model = { ...model, View: "View" };
           return model;
         });
+        this.isLoading = false;
       } catch (e) {
+        this.isLoading = false;
         console.log(e.response);
       }
     },

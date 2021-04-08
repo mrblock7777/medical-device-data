@@ -1,10 +1,22 @@
 <template>
   <div>
-    <table class="table-fixed">
+    <div class="pagination-top my-2">
+      <p>
+        Showing {{ startingIndex + 1 }} - {{ endingIndex }} of {{ rows.length }}
+      </p>
+      <ou-button class="mr-2" type="primary" @click="changePage(false)"
+        >Previous</ou-button
+      >
+      <ou-button class="ml-2" type="primary" @click="changePage(true)"
+        >Next</ou-button
+      >
+    </div>
+    <table class="table-fixed mt-4">
       <thead>
         <tr class="bg-green-600">
           <th
             class="border-b border-500 px-4 py-2 text-white font-medium"
+            :class="column.width ? 'w-' + column.width : ''"
             v-for="column in columns"
             :key="column.field"
           >
@@ -34,12 +46,16 @@
         </tr>
       </tbody>
     </table>
-    <div class="pagination">
+    <div class="pagination-bottom my-2">
       <p>
         Showing {{ startingIndex + 1 }} - {{ endingIndex }} of {{ rows.length }}
       </p>
-      <ou-button type="primary" @click="changePage(false)">Previous</ou-button>
-      <ou-button type="primary" @click="changePage(true)">Next</ou-button>
+      <ou-button class="mr-2" type="primary" @click="changePage(false)"
+        >Previous</ou-button
+      >
+      <ou-button class="ml-2" type="primary" @click="changePage(true)"
+        >Next</ou-button
+      >
     </div>
   </div>
 </template>
