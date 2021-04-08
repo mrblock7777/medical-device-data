@@ -34,11 +34,13 @@
         </tr>
       </tbody>
     </table>
-    <p>
-      Showing {{ startingIndex + 1 }} - {{ endingIndex }} of {{ rows.length }}
-    </p>
-    <ou-button type="primary" @click="changePage(false)">Previous</ou-button>
-    <ou-button type="primary" @click="changePage(true)">Next</ou-button>
+    <div class="pagination">
+      <p>
+        Showing {{ startingIndex + 1 }} - {{ endingIndex }} of {{ rows.length }}
+      </p>
+      <ou-button type="primary" @click="changePage(false)">Previous</ou-button>
+      <ou-button type="primary" @click="changePage(true)">Next</ou-button>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -87,6 +89,6 @@ export default Vue.extend({
     handleClick(eventName: string, row: any): void {
       this.$emit(eventName, row);
     },
-  }
+  },
 });
 </script>
